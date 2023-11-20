@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <title>RobotControllerClient</title>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+</head>
+<body>
+    <label>robot's ip: </label><input id="ip" name="ip" type="text" value="192.168.11.x">
+    <label>robot's port: </label><input id="port" name="port" type="text" value="22222">
+    <p></p>        
+    <div>発話させたい文章を記入してください。</div>
+    <textarea id="text" name="text" rows="8" cols="80"></textarea>
+    <br>
+    <button type="button" id="submitButton">ロボットに送信</button>
+    <br>
+    <p id="response"></p>
+
+    <script>
+        $(document).ready(function(){
+            $("#submitButton").click(function(){
+                $.ajax({
+                    url: "/process",
+                    type: "post",
+                    data: {
+                        ip:   $("#ip").val(),
+                        port: $("#port").val(),
+                        text: $("#text").val()
+                    },
+                    success: function(response){
+                        $('#response').text(response.message);
+                    }
+                }).done(function(data){
+                    console.log(data);
+                }).fail(function(){
+                    console.log('failed');
+                });
+            });
+        });
+    </script>
+</body>
+</html>
